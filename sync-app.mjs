@@ -20,22 +20,22 @@ const DEMO = {
     { id: 'sn3', title: '시간 넘기기', text: '(시간이 흘러 다음 날 아침이 되었다.)' },
     { id: 'sn4', title: '답변 짧게', text: '(OOC: 다음 답변은 대사 위주로 조금 짧게 써줘)' }
   ],
-  profiles: [{ id: 'demo_p', name: '서하온', summary: '폐허가 된 서울에서 살아남은 스물두 살 대학생', appearance: '짧은 흑발, 낡은 바람막이', personality: '겁이 많지만 한번 정하면 물러서지 않음', background: '', speech: '존댓말, 긴장하면 말이 빨라짐', memo: '', crack: '', img: '', created: t(9) }],
+  profiles: [{ id: 'demo_p', name: '한별', summary: '퇴근 후 일레온에 접속하는 스물여섯 살 회사원', appearance: '짧은 갈색 머리, 낡은 초보자 망토', personality: '호기심이 많고 손해 보는 걸 싫어함', background: '', speech: '존댓말, 당황하면 말끝을 흐림', memo: '', crack: '', img: '', created: t(9) }],
   runs: [{
-    id: 'demo_run', profileId: 'demo_p', workId: 'tamer', title: '부랑자 루트 · 첫 계약', status: '진행중', cover: '', created: t(9), updated: t(0),
-    fields: { mode: '부랑자', faction: '부랑자', partner: '볼트', line: '퓨즈', stage: 3 },
-    met: ['A', 'C', 'G'], rel: { A: '호감', C: '경계', G: '신뢰' }, affinity: { A: 2, C: -1, G: 3 },
-    state: { place: '구 잠실 지하 정거장', time: '붕괴 후 41일째 밤' },
-    pins: [{ id: 'pn1', text: '볼트는 비 오는 날 전기가 약해진다' }, { id: 'pn2', text: '카일에게 지하 지도의 출처를 아직 말하지 않았다' }],
+    id: 'demo_run', profileId: 'demo_p', workId: 'ileon', title: '뉴비 루트 · 첫 접속', status: '진행중', cover: '', created: t(9), updated: t(0),
+    fields: { mode: '뉴비', level: 12, cls: '견습 검사', grade: '일반', region: '리아텔', incident: '', pod: '보급형', asset: '' },
+    met: ['L', 'K', 'A'], rel: { L: '호감', K: '중립', A: '처음 만남' }, affinity: { L: 2, K: 1, A: 1 },
+    state: { place: '리아텔 외곽 숲', time: '접속 6일째 밤' },
+    pins: [{ id: 'pn1', text: '셀리아에게 정보값 300골드를 빚졌다' }, { id: 'pn2', text: '줄리엣은 파랑스 길드 소속이라는 소문' }],
     threads: [], timeline: [], items: [], stats: [], lore: [], gallery: [], noteIds: [], memoImgs: [], events: [], endings: [], myEvents: [], cmemo: {}, address: {}, memo: '', link: ''
   }],
   entries: [
-    { id: 'demo_e1', runId: 'demo_run', date: day(8), created: t(8), rating: 4, title: '번개 고양이와의 계약', when: '붕괴 후 34일째', place: '무너진 편의점', mood: '긴장',
-      summary: '굶주린 크리처에게 마지막 통조림을 내밀었다가 계약이 맺어졌다. 이름은 볼트.', events: '첫 계약', choice: '도망치지 않고 먹이를 나눴다', chars: [], delta: {}, scenes: [{ who: '볼트', text: '…찌릿.' }], gain: '파트너 볼트', next: '물과 건전지 구하기', tags: ['첫계약'], imgs: [] },
-    { id: 'demo_e2', runId: 'demo_run', date: day(4), created: t(4), rating: 5, title: '레아의 진료소', when: '붕괴 후 38일째', place: '성수동 임시 진료소', mood: '안도',
-      summary: '볼트가 다쳐 레아를 찾아갔다. 치료비 대신 약품 운반을 맡기로 했다.', events: '', choice: '레아의 부탁을 받아들였다', chars: ['G'], delta: { G: 2 }, scenes: [{ who: '레아', text: '다음엔 다치기 전에 와요.' }], gain: '진통제 2개', next: '약품 상자를 잠실까지 옮기기', tags: ['레아'], imgs: [] },
-    { id: 'demo_e3', runId: 'demo_run', date: day(0), created: t(0), rating: 4, title: '지하 정거장의 거래', when: '붕괴 후 41일째 밤', place: '구 잠실 지하 정거장', mood: '경계',
-      summary: '카일이 지하 지도를 넘기는 대가로 볼트를 노렸다. 이설린이 끼어들어 거래가 미뤄졌다.', events: '', choice: '볼트를 넘기지 않았다', chars: ['A', 'C'], delta: { A: 2, C: -1 }, scenes: [{ who: '카일', text: '그 고양이, 생각보다 비싸게 팔릴 텐데.' }, { who: '이설린', text: '거래는 내일 해. 오늘은 내가 먼저 왔으니까.' }], gain: '지하 지도 일부', next: '이설린에게 거래 조건 묻기', tags: ['카일', '이설린'], imgs: [] }
+    { id: 'demo_e1', runId: 'demo_run', date: day(8), created: t(8), rating: 4, title: '귀환석 광장의 첫 접속', when: '접속 1일째', place: '리아텔 귀환석 광장', mood: '설렘',
+      summary: '풀다이브 포드에 처음 누웠다. 견습 기사 유안이 튜토리얼을 맡아 주었다.', events: '튜토리얼', choice: '직업으로 검사를 골랐다', chars: ['L'], delta: { L: 2 }, scenes: [{ who: '유안', text: '이방인님, 귀환석에 손을 얹어 주세요!' }], gain: '초보자 장검', next: '첫 사냥 퀘스트 받기', tags: ['유안'], imgs: [] },
+    { id: 'demo_e2', runId: 'demo_run', date: day(4), created: t(4), rating: 4, title: '카뎃트의 정보상', when: '접속 4일째', place: '자유도시 카뎃트', mood: '긴장',
+      summary: '숨은 퀘스트 소문을 듣고 셀리아를 찾아갔다. 정보값이 모자라 외상을 달았다.', events: '', choice: '빚을 지고 정보를 샀다', chars: ['K'], delta: { K: 1 }, scenes: [{ who: '셀리아', text: '손님, 정보는 선불이에요. 이번만 외상으로 해 드릴게요.' }], gain: '잿빛 회랑 지도 조각', next: '지도 조각 나머지 찾기', tags: ['셀리아'], imgs: [] },
+    { id: 'demo_e3', runId: 'demo_run', date: day(0), created: t(0), rating: 5, title: '랭킹 1위와 마주치다', when: '접속 6일째 밤', place: '리아텔 외곽 숲', mood: '얼떨떨',
+      summary: '몬스터 무리에 몰린 순간 줄리엣이 한 번에 정리하고 지나갔다. 말을 걸었지만 대답은 짧았다.', events: '', choice: '줄리엣을 따라가 말을 걸었다', chars: ['A'], delta: { A: 1 }, scenes: [{ who: '줄리엣', text: '그쪽, 거기 서 있으면 죽어요.' }], gain: '레벨 12 달성', next: '줄리엣이 향한 하르덴 쪽 길 알아보기', tags: ['줄리엣'], imgs: [] }
   ]
 };
 
@@ -51,6 +51,24 @@ const boot = 'const d = await Store.load();';
 if (!html.includes(boot)) throw new Error('앱의 시작 코드가 바뀌었어요: sync-app.mjs의 boot 문자열을 확인하세요');
 html = html.replace(boot, 'const d = (await Store.load()) || window.__MOON_DEMO__ || null;');
 html = html.replace('<meta charset="utf-8">', '<meta charset="utf-8">\n<meta name="robots" content="noindex">\n' + inject);
+
+// 최신작을 맨 앞에: 작품 목록과 BGM 목록에서 FEATURED 작품을 앞으로 옮겨요.
+const FEATURED = 'ileon';
+{
+  const a = html.indexOf('const WORKS = '), b = html.indexOf('];', a);
+  if (a < 0 || b < 0) throw new Error('WORKS 목록을 찾지 못했어요');
+  const works = JSON.parse(html.slice(a + 14, b + 1));
+  const i = works.findIndex(w => w.id === FEATURED);
+  if (i < 0) throw new Error(FEATURED + ' 작품이 WORKS에 없어요');
+  works.unshift(works.splice(i, 1)[0]);
+  html = html.slice(0, a + 14) + JSON.stringify(works) + html.slice(b + 1);
+  const c = html.indexOf('const BGM = ['), d = html.indexOf('\n];', c);
+  if (c < 0 || d < 0) throw new Error('BGM 목록을 찾지 못했어요');
+  const lines = html.slice(c, d).split('\n').map((l, i) => i && l.trim() && !l.trimEnd().endsWith(',') ? l.trimEnd() + ',' : l), head = lines.shift();
+  const mine = lines.filter(l => l.includes("work: '" + FEATURED + "'"));
+  html = html.slice(0, c) + [head, ...mine, ...lines.filter(l => !mine.includes(l))].join('\n') + html.slice(d);
+}
+
 fs.writeFileSync(path.join(out, 'index.html'), html);
 for (const dir of ['img', 'media']) fs.cpSync(path.join(src, dir), path.join(out, dir), { recursive: true });
 const ver = (html.match(/APP_VERSION = '([^']+)'/) || [])[1];
