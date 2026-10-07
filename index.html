@@ -1,0 +1,697 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#16141B">
+<title>MOON · 문창놈 플레이 기록소</title>
+<meta name="description" content="크랙 롤플레이의 세션과 일지, 만난 인물, 상용구를 한곳에 기록하는 무료 앱. 설치 전에 사이트에서 바로 써 보고, 안드로이드·Windows·Mac용으로 받으세요.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="MOON · 문창놈 플레이 기록소">
+<meta property="og:description" content="크랙에서 보낸 밤을 기록하는 앱. 설치 전에 바로 써 보세요.">
+<meta property="og:image" content="https://moooncang.github.io/moon/img/og.jpg">
+<meta property="og:url" content="https://moooncang.github.io/moon/">
+<link rel="canonical" href="https://moooncang.github.io/moon/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="32x32" href="img/icon-32.png">
+<link rel="apple-touch-icon" href="img/icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Noto+Serif+KR:wght@500;700&display=swap">
+<style>
+/* MOON 배포 사이트 — 앱과 같은 토큰. 어두운 면 3단계 + 달빛 금색 하나, 모서리 직각. */
+:root{color-scheme:dark;
+  --bg:#16141B;--surface:#1F1D25;--surface2:#29262F;--surface3:#35313B;
+  --ink:#F6F1E7;--muted:#A9A296;--dim:#8F887D;
+  --line:rgba(255,236,205,.09);--line2:rgba(255,236,205,.055);--hi:inset 0 1px 0 rgba(255,236,205,.06);
+  --brass:#F3C457;--brass-hover:#F7D27A;--brass-soft:#3A2F1A;--brass-line:rgba(243,196,87,.42);--on-brass:#2B1C04;--moon:#F4CE6A;
+  --f-display:'Noto Serif KR','Nanum Myeongjo',serif;
+  --f-latin:'Cormorant Garamond','Noto Serif KR',serif;
+  --f-body:'IBM Plex Sans KR','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --shadow-pop:0 18px 48px -12px rgba(0,0,0,.6),0 2px 6px rgba(0,0,0,.3);
+  --wrap:1360px;--gut:clamp(16px,3vw,40px);--top:60px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--top) + 12px);-webkit-text-size-adjust:100%;scrollbar-color:var(--surface3) var(--bg)}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.7 var(--f-body);font-variant-numeric:lining-nums;word-break:keep-all;overflow-wrap:break-word;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:var(--brass-soft);color:var(--ink)}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--surface3);border:2px solid var(--bg)}
+a{color:inherit;text-underline-offset:.22em;text-decoration-thickness:1px}
+img,svg{display:block}
+img{max-width:100%;height:auto}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-align:inherit}
+:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--gut)}
+.num{font-family:var(--f-mono);font-variant-numeric:lining-nums tabular-nums;letter-spacing:-.01em}
+.m-only{display:none}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:fixed;left:-999px;top:8px;background:var(--brass);color:var(--on-brass);padding:8px 14px;z-index:50}
+.skip:focus{left:8px}
+q{quotes:none}
+
+/* 버튼 */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 20px;font-weight:600;font-size:15.5px;text-decoration:none;border:1px solid var(--line);background:var(--surface2);box-shadow:var(--hi);transition:background .2s,border-color .2s,transform .16s var(--ease-out);white-space:nowrap}
+.btn:hover{background:var(--surface3)}
+.btn:active{transform:translateY(1px) scale(.99)}
+.btn.pri{background:var(--brass);color:var(--on-brass);border-color:var(--brass);box-shadow:0 8px 22px -14px rgba(0,0,0,.8)}
+.btn.pri:hover{background:var(--brass-hover)}
+.btn small{font:500 13px/1 var(--f-mono);opacity:.7}
+.btn.lg{min-height:58px;font-size:17px;padding:0 26px}
+
+/* 상단 */
+.top{position:fixed;inset:0 0 auto;z-index:30;height:var(--top);background:rgba(22,20,27,.78);backdrop-filter:blur(14px) saturate(1.1);-webkit-backdrop-filter:blur(14px) saturate(1.1);border-bottom:1px solid var(--line2)}
+.top .wrap{display:flex;align-items:center;height:100%;gap:20px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand img{width:26px;height:26px}
+.brand b{font:600 21px/1 var(--f-latin);letter-spacing:.32em;padding-left:.08em}
+.nav{display:flex;gap:2px;margin-left:auto;align-items:center}
+.nav a{text-decoration:none;color:var(--muted);font-size:14.5px;padding:8px 12px;transition:color .2s}
+.nav a:hover{color:var(--ink)}
+.nav .ver{font-size:13px;color:var(--dim);border:1px solid var(--line);padding:6px 9px;margin-left:8px}
+
+/* ====== 첫 화면: 체험 무대 ====== */
+.stage{position:relative;padding-top:var(--top);min-height:100svh;overflow:hidden;isolation:isolate}
+.sky{position:absolute;left:50%;top:calc(var(--top) + 46%);width:min(1180px,150vh);aspect-ratio:1;transform:translate(-50%,-50%);z-index:-1;pointer-events:none}
+.sky svg{width:100%;height:100%;overflow:visible}
+.sky .disc{fill:#1C1A21}
+.sky .lit{fill:var(--moon);opacity:.075}
+.sky .rim{fill:none;stroke:var(--line);stroke-width:.25}
+.sky .tick{stroke:rgba(255,236,205,.14);stroke-width:.3}
+.stage::after{content:"";position:absolute;inset:auto 0 0;height:160px;background:linear-gradient(to bottom,rgba(22,20,27,0),var(--bg));z-index:-1}
+.stage-grid{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:clamp(28px,3.4vw,52px);align-items:start;padding-top:clamp(28px,5vh,56px);padding-bottom:56px}
+
+.intro h1{font:700 clamp(30px,2.75vw,42px)/1.25 var(--f-display);letter-spacing:-.015em;text-wrap:balance}
+.intro .lead{margin-top:16px;color:var(--muted);font-size:clamp(15.5px,1.2vw,17px);max-width:30em}
+.intro .lead b{color:var(--ink);font-weight:600}
+
+.rail{list-style:none;margin-top:28px;border-top:1px solid var(--line)}
+.rail button{position:relative;display:grid;grid-template-columns:22px 1fr auto;gap:14px;align-items:center;width:100%;padding:10px 4px 10px 2px;border-bottom:1px solid var(--line);transition:background .25s}
+.rail button:hover{background:rgba(255,236,205,.025)}
+.rail svg{width:22px;height:22px}
+.rail .rm-disc{fill:var(--surface3)}.rail .rm-lit{fill:var(--dim);transition:fill .3s}
+.rail b{display:block;font-weight:600;font-size:15.5px;line-height:1.35;color:var(--muted);transition:color .25s}
+.rail small{display:block;font-size:13.5px;color:var(--dim);margin-top:1px}
+.rail i{width:16px;height:1px;background:var(--brass);transform:scaleX(0);transform-origin:left;transition:transform .45s var(--ease-out)}
+.rail button:hover b{color:var(--ink)}
+.rail button[aria-pressed="true"] b{color:var(--ink)}
+.rail button[aria-pressed="true"] .rm-lit{fill:var(--moon)}
+.rail button[aria-pressed="true"] i{transform:scaleX(1)}
+
+/* 휴대폰 */
+.device{position:relative;justify-self:center;width:calc(min(390px,92vw) + 22px)}
+.frame{position:relative;background:var(--surface);border:1px solid rgba(255,236,205,.12);padding:10px;box-shadow:var(--shadow-pop),0 60px 120px -40px rgba(0,0,0,.7)}
+.frame::before{content:"";display:block;width:56px;height:4px;margin:0 auto 8px;background:var(--surface3)}
+.screen{position:relative;height:clamp(540px,calc(100svh - 230px),800px);background:var(--bg);overflow:hidden}
+.screen iframe{display:block;width:100%;height:100%;border:0;background:var(--bg);opacity:0;transition:opacity .6s var(--ease-out)}
+.screen.ready iframe{opacity:1}
+.boot{position:absolute;inset:0;display:grid;place-items:center;align-content:center;gap:14px;color:var(--dim);font-size:14px;transition:opacity .4s}
+.boot svg{width:56px;height:56px;animation:wax 1.6s ease-in-out infinite alternate}
+.screen.ready .boot{opacity:0;pointer-events:none}
+@keyframes wax{from{opacity:.35}to{opacity:1}}
+.tapcover{display:none}
+.device-note{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 12px;margin-top:14px;font-size:13px;color:var(--dim);text-align:center}
+.device-note button{color:var(--muted);text-decoration:underline;text-underline-offset:.22em;text-decoration-thickness:1px}
+.device-note button:hover{color:var(--ink)}
+
+/* 떠 있는 달 (빠른 복사 시연) */
+.float-moon{position:absolute;right:-26px;top:40%;z-index:3;width:52px;height:52px;display:grid;place-items:center;background:var(--surface2);border:1px solid var(--brass-line);box-shadow:var(--shadow-pop);opacity:0;transform:translateX(-12px) scale(.9);pointer-events:none;transition:opacity .45s var(--ease-out),transform .55s var(--ease-out)}
+.float-moon svg{width:30px;height:30px}
+.float-moon.on{opacity:1;transform:none;pointer-events:auto}
+.float-moon.on::after{content:"";position:absolute;inset:-7px;border:1px solid var(--brass-line);animation:ring 2.2s var(--ease-out) infinite}
+@keyframes ring{from{opacity:.9;transform:scale(.86)}to{opacity:0;transform:scale(1.3)}}
+
+/* 오른쪽: 받기 + 기능 설명 */
+.side{display:grid;gap:30px}
+.get{background:var(--surface);border:1px solid var(--line);box-shadow:var(--hi);padding:22px 22px 18px}
+.get h2{font:600 14.5px/1.4 var(--f-body);color:var(--muted);margin-bottom:12px}
+.get .btn.pri{width:100%}
+.get .alt{display:flex;flex-wrap:wrap;gap:4px 16px;margin-top:14px;font-size:14px}
+.get .alt a{color:var(--muted)}
+.get .alt a:hover{color:var(--ink)}
+.get .meta{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--dim)}
+.get .meta a{color:var(--muted)}
+.get .ios{font-size:14px;color:var(--muted);margin-top:10px}
+.about{min-height:200px}
+.about h2{font:700 22px/1.4 var(--f-display);text-wrap:balance}
+.about p{margin-top:10px;color:var(--muted);font-size:15px;max-width:30em}
+.about .tip{margin-top:14px;font-size:14px;color:var(--ink);display:flex;gap:10px;align-items:baseline}
+.about .tip::before{content:"";flex:none;width:6px;height:6px;background:var(--brass);transform:translateY(-2px)}
+.about [data-anim]{animation:rise .5s var(--ease-out) both}
+@keyframes rise{from{opacity:0;transform:translateY(6px);filter:blur(2px)}to{opacity:1;transform:none;filter:none}}
+
+/* 따라오는 받기 막대 */
+.dock{position:fixed;left:50%;bottom:16px;z-index:25;display:flex;align-items:center;gap:16px;padding:8px 8px 8px 16px;background:rgba(31,29,37,.92);border:1px solid var(--line);box-shadow:var(--shadow-pop);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transform:translate(-50%,calc(100% + 32px));transition:transform .5s var(--ease-out);max-width:calc(100vw - 24px)}
+.dock.on{transform:translate(-50%,0)}
+.dock .who{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--muted);white-space:nowrap}
+.dock .who img{width:24px;height:24px}
+.dock .btn{min-height:42px;font-size:15px}
+
+/* ====== 섹션 공통 ====== */
+section{padding:clamp(80px,11vw,136px) 0}
+.sh{max-width:40em;margin-bottom:clamp(36px,5vw,56px)}
+.sh h2{font:700 clamp(28px,3.4vw,42px)/1.25 var(--f-display);letter-spacing:-.01em;text-wrap:balance}
+.sh p{margin-top:14px;color:var(--muted);font-size:clamp(15.5px,1.3vw,17px)}
+
+/* ====== 받고 설치하기 ====== */
+#get{border-top:1px solid var(--line2)}
+.plats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line)}
+.plat{position:relative;display:grid;grid-template-columns:auto 1fr;gap:2px 16px;padding:22px 24px;background:var(--surface);transition:background .25s}
+.plat+.plat{border-left:1px solid var(--line)}
+.plat:hover{background:#232129}
+.plat svg{grid-row:span 2;width:28px;height:28px;color:var(--dim);transition:color .25s;align-self:center}
+.plat b{font-size:18px;font-weight:600}
+.plat span{font-size:14px;color:var(--dim)}
+.plat .me{position:absolute;right:16px;top:16px;font-size:12.5px;font-style:normal;color:var(--brass);display:none}
+.plat.mine .me{display:block}
+.plat::after{content:"";position:absolute;left:-1px;right:-1px;top:-1px;height:2px;background:var(--brass);transform:scaleX(0);transition:transform .5s var(--ease-out)}
+.plat[aria-selected="true"]{background:var(--surface2)}
+.plat[aria-selected="true"]::after{transform:scaleX(1)}
+.plat[aria-selected="true"] svg{color:var(--ink)}
+
+.panel{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(28px,4vw,64px);border:1px solid var(--line);border-top:0;padding:clamp(24px,3.5vw,44px);background:rgba(31,29,37,.45)}
+.panel[hidden]{display:none}
+.fileline{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;padding-bottom:26px;margin-bottom:12px;border-bottom:1px solid var(--line)}
+.fileline dl{display:grid;gap:2px;font-size:13.5px;color:var(--dim)}
+.fileline dd{display:inline;margin-left:8px;color:var(--muted)}
+.fileline dt{display:inline}
+.steps{list-style:none}
+.steps li+li{border-top:1px solid var(--line2)}
+.steps button{display:grid;grid-template-columns:30px 1fr;gap:0 14px;width:100%;padding:15px 0;align-items:center}
+.steps .n{width:30px;height:30px;display:grid;place-items:center;border:1px solid var(--line);font:500 13px/1 var(--f-mono);color:var(--dim);transition:background .3s,border-color .3s,color .3s}
+.steps b{font-size:16px;font-weight:600;color:var(--muted);transition:color .25s}
+.steps button:hover b{color:var(--ink)}
+.steps p{grid-column:2;font-size:14.5px;color:var(--muted);display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .45s var(--ease-out),opacity .35s}
+.steps p>span{overflow:hidden}
+.steps q{color:var(--ink);background:var(--surface3);padding:1px 3px}
+.steps [aria-current="step"] .n{background:var(--brass);border-color:var(--brass);color:var(--on-brass)}
+.steps [aria-current="step"] b{color:var(--ink)}
+.steps [aria-current="step"] p{grid-template-rows:1fr;opacity:1;padding-top:6px}
+.after{margin-top:22px;padding-top:20px;border-top:1px solid var(--line);display:grid;gap:10px}
+.after p{font-size:14px;color:var(--dim)}
+.after b{color:var(--muted);font-weight:600;margin-right:6px}
+.after q{color:var(--muted)}
+
+/* 예시 화면 */
+.view{position:sticky;top:calc(var(--top) + 24px);align-self:start}
+.mock{position:relative;aspect-ratio:4/3;background:#121016;border:1px solid var(--line);overflow:hidden;display:grid;place-items:center;padding:28px}
+.mock>div{width:100%;max-width:380px;animation:rise .45s var(--ease-out) both}
+.mockcap{display:flex;justify-content:space-between;gap:12px;margin-top:12px;font-size:13px;color:var(--dim)}
+.stepnav{display:flex;gap:8px;margin-top:14px}
+.stepnav .btn{min-height:40px;font-size:14px;padding:0 16px}
+.stepnav .btn:disabled{opacity:.4;cursor:default;transform:none}
+.m-win{background:var(--surface);border:1px solid rgba(255,236,205,.12);box-shadow:var(--shadow-pop)}
+.m-bar{display:flex;align-items:center;gap:6px;padding:9px 12px;border-bottom:1px solid var(--line);font-size:12.5px;color:var(--dim)}
+.m-bar i{width:7px;height:7px;background:var(--surface3)}
+.m-bar span{margin-left:6px}
+.m-body{padding:16px 16px 14px;font-size:13.5px;color:var(--muted);line-height:1.6}
+.m-body h4{font:600 15.5px/1.4 var(--f-body);color:var(--ink);margin-bottom:6px}
+.m-body .fn{font-family:var(--f-mono);font-size:12.5px;color:var(--ink);word-break:break-all}
+.m-btns{display:flex;justify-content:flex-end;gap:10px;padding:0 16px 16px}
+.m-b{padding:7px 14px;font-size:13px;border:1px solid var(--line);background:var(--surface2);color:var(--muted)}
+.hit{position:relative;color:var(--ink)!important;border-color:var(--brass)!important;background:var(--brass-soft)!important}
+.hit::after{content:"";position:absolute;inset:-6px;border:1px solid var(--brass);animation:ring 1.8s var(--ease-out) infinite;pointer-events:none}
+.m-link{display:inline-block;margin-top:8px;padding:0 4px;text-decoration:underline;text-underline-offset:3px;border:1px solid transparent}
+.m-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-top:1px solid var(--line);font-size:13.5px;color:var(--ink)}
+.m-tog{position:relative;flex:none;width:38px;height:20px;border:1px solid var(--line);background:var(--surface3)}
+.m-tog::before{content:"";position:absolute;top:3px;left:3px;width:12px;height:12px;background:var(--dim)}
+.m-tog.hit{background:var(--brass)!important}
+.m-tog.hit::before{left:auto;right:3px;background:var(--on-brass)}
+.m-menu{width:210px;margin:0 auto;background:var(--surface);border:1px solid rgba(255,236,205,.12);box-shadow:var(--shadow-pop);padding:5px 0;font-size:13.5px}
+.m-menu div{padding:6px 14px;color:var(--muted)}
+.m-menu hr{border:0;border-top:1px solid var(--line);margin:4px 0}
+.m-drag{display:flex;align-items:center;justify-content:center;gap:22px;padding:10px 0}
+.m-ico{display:grid;justify-items:center;gap:8px;font-size:12.5px;color:var(--muted)}
+.m-ico img,.m-ico .fold{width:64px;height:64px}
+.m-ico .fold{background:var(--surface2);border:1px solid var(--line);display:grid;place-items:center}
+.m-arrow{width:70px;height:1px;background:var(--brass);position:relative;transform-origin:left;animation:slide 1.8s var(--ease-out) infinite}
+.m-arrow::after{content:"";position:absolute;right:-1px;top:-4px;border:4px solid transparent;border-left:6px solid var(--brass);border-right:0}
+@keyframes slide{0%{transform:scaleX(.15);opacity:.3}60%,100%{transform:scaleX(1);opacity:1}}
+.m-start{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;background:var(--surface);border:1px solid var(--line);padding:16px;box-shadow:var(--shadow-pop)}
+.m-start span{aspect-ratio:1;background:var(--surface2)}
+.m-start span.hit{display:grid;place-items:center;align-content:center;gap:4px;font-size:11.5px}
+.m-start img{width:34px;height:34px}
+
+/* ====== 변경 내역 ====== */
+#changes{border-top:1px solid var(--line2)}
+.log-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:clamp(28px,5vw,80px)}
+.latest{position:sticky;top:calc(var(--top) + 24px);align-self:start}
+.latest h2{font:700 clamp(28px,3.4vw,42px)/1.25 var(--f-display);margin-bottom:22px}
+.latest .v{font:500 clamp(24px,2.4vw,30px)/1.2 var(--f-mono);letter-spacing:-.02em;color:var(--ink)}
+.latest .d{margin-top:10px;color:var(--dim);font-size:14px}
+.latest p{margin-top:18px;color:var(--muted);max-width:24em}
+.log{list-style:none;border-top:1px solid var(--line)}
+.log>li{border-bottom:1px solid var(--line)}
+.log summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:96px 1fr auto;gap:16px;align-items:baseline;padding:20px 0}
+.log summary::-webkit-details-marker{display:none}
+.log summary:hover .first{color:var(--ink)}
+.log .v{font:500 17px/1.3 var(--f-mono)}
+.log .first{font-size:15.5px;color:var(--muted);transition:color .2s}
+.log .d{font-size:13px;color:var(--dim)}
+.log ul{list-style:none;padding:0 0 22px 112px}
+.log ul li{position:relative;padding-left:16px;color:var(--muted);font-size:15px}
+.log ul li+li{margin-top:6px}
+.log ul li::before{content:"";position:absolute;left:0;top:.8em;width:6px;height:1px;background:var(--dim)}
+.log details[open] .first{color:var(--ink)}
+
+/* ====== 질문 ====== */
+#faq{border-top:1px solid var(--line2)}
+.faq{border-top:1px solid var(--line);max-width:860px}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:16px;padding:22px 0;font-weight:600;font-size:17px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"";margin-left:auto;flex:none;width:9px;height:9px;border-right:1.5px solid var(--muted);border-bottom:1.5px solid var(--muted);transform:translateY(-3px) rotate(45deg);transition:transform .3s var(--ease-out)}
+.faq details[open] summary::after{transform:translateY(2px) rotate(225deg)}
+.faq details p{color:var(--muted);padding:0 0 24px;max-width:46em}
+
+/* ====== 마무리 ====== */
+.close{position:relative;overflow:hidden;isolation:isolate;text-align:center;border-top:1px solid var(--line2);padding:clamp(120px,16vw,190px) 0}
+.close .full{position:absolute;left:50%;top:50%;width:min(720px,115vw);aspect-ratio:1;transform:translate(-50%,-50%);z-index:-1}
+.close .full .a{fill:#1C1A21}
+.close .full .b{fill:var(--moon);opacity:.065}
+.close h2{font:700 clamp(30px,4.2vw,54px)/1.25 var(--f-display);text-wrap:balance}
+.close p{margin:16px auto 0;color:var(--muted);max-width:30em}
+.close .btn{margin-top:34px}
+
+footer{border-top:1px solid var(--line2);padding:36px 0 104px;color:var(--dim);font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center}
+footer .brand b{font-size:17px}footer .brand img{width:20px;height:20px}
+footer a{color:var(--muted)}
+
+/* ====== 반응형 ====== */
+@media (max-width:1180px){
+  .stage-grid{grid-template-columns:minmax(0,1fr) auto}
+  .intro{grid-column:1;grid-row:1}
+  .side{grid-column:1;grid-row:2}
+  .device{grid-column:2;grid-row:1 / span 2}
+}
+@media (max-width:860px){
+  :root{--top:56px}
+  .nav a{display:none}
+  .d-only{display:none}.m-only{display:inline}
+  .stage-grid{display:flex;flex-direction:column;gap:26px;padding-top:28px}
+  .intro{display:contents}
+  .intro .copy{order:1}
+  .side{display:contents}
+  .get{order:2}
+  .rail-wrap{order:3;width:100%}
+  .device{order:4;width:100%}
+  .about{order:5;min-height:0}
+  .rail{display:flex;gap:8px;margin:0 calc(var(--gut) * -1);padding:0 var(--gut) 4px;border:0;overflow-x:auto;scrollbar-width:none;scroll-snap-type:x proximity}
+  .rail::-webkit-scrollbar{display:none}
+  .rail li{flex:none;scroll-snap-align:start}
+  .rail button{grid-template-columns:18px auto;gap:8px;padding:9px 14px;border:1px solid var(--line);background:var(--surface)}
+  .rail svg{width:18px;height:18px}
+  .rail small,.rail i{display:none}
+  .rail b{font-size:14.5px;white-space:nowrap}
+  .rail button[aria-pressed="true"]{border-color:var(--brass-line);background:var(--surface2)}
+  .screen{height:min(640px,calc(100svh - 150px))}
+  .tapcover{display:grid;position:absolute;inset:0;place-items:end center;padding-bottom:22px;background:linear-gradient(to bottom,rgba(22,20,27,0) 50%,rgba(22,20,27,.88));z-index:2}
+  .tapcover span{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;background:var(--surface2);border:1px solid var(--brass-line);font-size:15px;font-weight:600}
+  .screen.live .tapcover{display:none}
+  .float-moon{right:6px}
+  .plat{grid-template-columns:1fr;justify-items:center;gap:6px;padding:14px 6px;text-align:center}
+  .plat svg{grid-row:auto;width:24px;height:24px}
+  .plat b{font-size:15px}
+  .plat span,.plat .me{display:none!important}
+  .lhs{display:contents}
+  .fileline{order:1}.steps{order:2}.view{order:3}.after{order:4}
+  .panel{display:flex;flex-direction:column;gap:18px;padding:18px 16px 24px}
+  .fileline{margin-bottom:0;padding-bottom:18px}
+  .after{margin-top:0}
+  .view{position:static}
+  .log-grid{grid-template-columns:1fr}
+  .latest{position:static}
+  .log summary{grid-template-columns:72px 1fr}
+  .log .d{display:none}
+  .log ul{padding-left:88px}
+  .dock{left:12px;right:12px;bottom:12px;transform:translateY(calc(100% + 24px));justify-content:space-between}
+  .dock.on{transform:none}
+}
+@media (max-width:420px){
+  .dock .who>span{display:none}
+  .mock{padding:14px}
+  .log ul{padding-left:0}
+  .fileline .btn{width:100%}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#get">받기·설치 안내로 건너뛰기</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#" aria-label="MOON 처음으로"><img src="img/icon-180.png" alt="" width="26" height="26"><b>MOON</b></a>
+    <nav class="nav" aria-label="주요 메뉴">
+      <a href="#try">써 보기</a>
+      <a href="#get">받기·설치</a>
+      <a href="#changes">변경 내역</a>
+      <a href="#faq">질문</a>
+      <span class="ver num" id="topVer"></span>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="stage" id="try">
+  <div class="sky" aria-hidden="true">
+    <svg viewBox="-50 -50 100 100"><circle class="rim" r="49"/><path class="tick" d="M0 -50v3.5M0 46.5v3.5"/><circle class="disc" r="44"/><path class="lit" id="skyLit"/></svg>
+  </div>
+
+  <div class="wrap stage-grid">
+    <div class="intro">
+      <div class="copy">
+        <h1>크랙에서 보낸 밤을<br>기록해 두는 앱</h1>
+        <p class="lead"><b>MOON</b>은 문창놈이 만든 플레이 기록소예요. 세션과 일지, 만난 인물, 자주 쓰는 문구를 기기 안에 모아 둬요. <span class="d-only">가운데</span><span class="m-only">아래</span> 화면은 진짜 MOON이에요. 직접 눌러 보세요.</p>
+      </div>
+      <div class="rail-wrap">
+        <ul class="rail" id="rail" aria-label="기능 둘러보기"></ul>
+      </div>
+    </div>
+
+    <div class="device">
+      <div class="frame">
+        <div class="screen" id="screen">
+          <div class="boot" aria-hidden="true"><svg viewBox="-48 -48 96 96"><circle r="40" fill="#29262F"/><path d="M0 -40A40 40 0 0 1 0 40A20 40 0 0 0 0 -40Z" fill="#F4CE6A"/></svg>앱을 여는 중</div>
+          <iframe id="app" title="MOON 앱 체험 화면" src="app/index.html"></iframe>
+          <button class="tapcover" id="tapcover" type="button"><span>눌러서 직접 써 보기</span></button>
+        </div>
+      </div>
+      <button class="float-moon" id="floatMoon" type="button" aria-label="빠른 복사 목록 열기" tabindex="-1"><svg viewBox="-48 -48 96 96" aria-hidden="true"><circle r="40" fill="#F4CE6A"/></svg></button>
+      <p class="device-note"><span>예시 기록이 들어 있는 체험판이에요.</span><span>기록은 이 브라우저에만 남아요.</span><button type="button" id="reset">처음 상태로</button></p>
+    </div>
+
+    <div class="side">
+      <div class="get" id="heroGet">
+        <h2 id="getTitle">내 기기에 설치하기</h2>
+        <a class="btn pri lg" id="heroBtn" href="#get">받기</a>
+        <p class="ios" id="iosNote" hidden>아이폰·아이패드는 아직 지원하지 않아요. 안드로이드 휴대폰이나 컴퓨터에서 받아 주세요.</p>
+        <div class="alt" id="heroAlt"></div>
+        <div class="meta"><span class="num" id="heroVer"></span><span>무료</span><span>로그인 없음</span><a href="#get">설치 방법</a></div>
+      </div>
+      <div class="about" id="about" aria-live="polite"></div>
+    </div>
+  </div>
+</div>
+
+<section id="get">
+  <div class="wrap">
+    <div class="sh">
+      <h2>받고, 경고 한 번 넘기면 끝</h2>
+      <p>MOON은 앱 스토어를 거치지 않고 직접 배포해요. 그래서 처음 설치할 때 기기가 한 번 확인을 요청해요. 어디를 누르면 되는지 화면으로 보여 드릴게요.</p>
+    </div>
+    <div class="plats" role="tablist" aria-label="기기 선택" id="plats"></div>
+    <div id="panels"></div>
+  </div>
+</section>
+
+<section id="changes">
+  <div class="wrap log-grid">
+    <div class="latest">
+      <h2>변경 내역</h2>
+      <div class="v" id="latestV"></div>
+      <div class="d" id="latestD"></div>
+      <p>새 버전은 지금 쓰는 앱 위에 그대로 설치하면 돼요. 기록은 남아 있어요. 앱의 MY 화면 맨 아래에서 지금 버전을 볼 수 있어요.</p>
+    </div>
+    <ol class="log" id="log" aria-label="버전별 변경 내역"></ol>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="sh"><h2>자주 묻는 질문</h2></div>
+    <div class="faq">
+      <details><summary>무료인가요?</summary><p>네, 무료예요. 광고도 없어요.</p></details>
+      <details><summary>기록은 어디에 저장되나요?</summary><p>쓰는 기기 안에만 저장돼요. 서버로 보내지 않아서 로그인도 필요 없어요. 대신 기기를 바꾸거나 앱을 지우기 전에는 MY → 백업 · 복원에서 백업 파일을 꼭 저장해 두세요.</p></details>
+      <details><summary>휴대폰과 컴퓨터 기록이 자동으로 이어지나요?</summary><p>자동 동기화는 없어요. 한쪽에서 백업 파일을 저장하고 다른 쪽에서 복원하면 같은 기록을 이어 쓸 수 있어요.</p></details>
+      <details><summary>이 사이트에서 써 본 기록도 앱으로 옮겨지나요?</summary><p>체험판도 진짜 앱과 같아서, 체험판의 MY → 백업 · 복원에서 백업 파일을 저장한 뒤 설치한 앱에서 복원하면 옮겨져요. 들어 있던 예시 기록은 지워도 괜찮아요.</p></details>
+      <details><summary>설치 경고가 뜨는데 괜찮은 건가요?</summary><p>유료 코드 서명이나 애플 공증을 받지 않은 앱이라 기기가 처음 보는 앱이라고 한 번 확인하는 거예요. 이 사이트의 링크로 받은 파일이라면 안내대로 진행해도 괜찮아요.</p></details>
+      <details><summary>아이폰에서도 쓸 수 있나요?</summary><p>아직은 안드로이드, Windows, Mac만 지원해요. 아이폰에서는 이 페이지의 체험판으로 화면을 둘러볼 수 있어요.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="close" id="end">
+  <svg class="full" viewBox="-50 -50 100 100" aria-hidden="true"><circle class="a" r="44"/><circle class="b" r="44"/></svg>
+  <div class="wrap">
+    <h2>다음 플레이부터,<br>기록은 MOON에 맡기세요</h2>
+    <p>오늘 밤 이어 갈 세션이 있다면 지금 설치해 두세요.</p>
+    <a class="btn pri lg" id="closeBtn" href="#get">받기</a>
+  </div>
+</section>
+</main>
+
+<div class="dock" id="dock" aria-hidden="true">
+  <span class="who"><img src="img/icon-180.png" alt="" width="24" height="24"><span>MOON <span class="num" id="dockVer"></span></span></span>
+  <a class="btn pri" id="dockBtn" href="#get" tabindex="-1">받기</a>
+</div>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#"><img src="img/icon-180.png" alt="" width="20" height="20"><b>MOON</b></a>
+    <span>문창놈 플레이 기록소 · <span class="num" id="footVer"></span></span>
+    <a id="footRel" href="#">지난 버전 (GitHub 릴리스)</a>
+  </div>
+</footer>
+
+<script src="release.js"></script>
+<script>
+(function () {
+  'use strict';
+  var R = window.MOON_RELEASE;
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]; }); };
+  var mb = function (b) { return Math.round(b / 1e6) + 'MB'; };
+  var dot = function (d) { return d.replace(/-/g, '.'); };
+  var rel = 'https://github.com/' + R.repo + '/releases';
+  var url = function (k) { return rel + '/download/v' + R.version + '/' + encodeURIComponent(R.files[k].name); };
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var narrow = matchMedia('(max-width:860px)');
+
+  /* ---------- 달 그리기 (앱과 같은 방식) ---------- */
+  function litPath(f, r) {
+    var k = Math.cos(2 * Math.PI * f), rx = Math.abs(k) * r, wax = f < 0.5, sw = wax ? (k > 0 ? 0 : 1) : (k > 0 ? 1 : 0);
+    return 'M0 ' + -r + ' A' + r + ' ' + r + ' 0 0 ' + (wax ? 1 : 0) + ' 0 ' + r + ' A' + rx.toFixed(2) + ' ' + r + ' 0 0 ' + sw + ' 0 ' + -r + 'Z';
+  }
+  var syn = 29.530588853, today = ((((Date.now() - Date.UTC(2000, 0, 6, 18, 14)) / 864e5) % syn + syn) % syn) / syn;
+
+  /* ---------- 기기 ---------- */
+  var ua = navigator.userAgent, os = null;
+  if (/Android/i.test(ua)) os = 'android';
+  else if (/iPhone|iPad|iPod/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1)) os = 'ios';
+  else if (/Windows/i.test(ua)) os = 'windows';
+  else if (/Macintosh|Mac OS X/i.test(ua)) os = 'mac';
+  var P = {
+    android: { name: '안드로이드', need: 'Android 7.0 이상', kind: 'APK',
+      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19"/><path d="M10.5 18.5h3"/></svg>' },
+    windows: { name: 'Windows', need: 'Windows 10·11, 64비트', kind: '설치 파일',
+      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3.5 5.5 10.5 4.5v7h-7zM13 4.2l7.5-1v8.3H13zM3.5 13h7v6.5l-7-1zM13 13h7.5v7.8l-7.5-1z"/></svg>' },
+    mac: { name: 'Mac', need: 'macOS 12 이상 · 애플 칩, 인텔', kind: 'DMG',
+      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2.5" y="4" width="19" height="12.5"/><path d="M8 20h8M12 16.5V20"/></svg>' }
+  };
+  var keys = ['android', 'windows', 'mac'];
+  var mine = R.files[os] ? os : null;
+
+  var ver = 'v' + R.version;
+  $('#topVer').textContent = ver; $('#dockVer').textContent = ver; $('#footVer').textContent = ver;
+  $('#heroVer').textContent = ver + ' · ' + dot(R.date);
+  $('#footRel').href = rel;
+
+  function setBtn(a, k) { a.href = url(k); a.innerHTML = esc(P[k].name) + '용 받기 <small>' + mb(R.files[k].size) + '</small>'; }
+  var altLink = function (k) { return '<a href="' + url(k) + '">' + esc(P[k].name) + ' <span class="num">' + mb(R.files[k].size) + '</span></a>'; };
+  if (mine) {
+    setBtn($('#heroBtn'), mine); setBtn($('#dockBtn'), mine); setBtn($('#closeBtn'), mine);
+    $('#getTitle').textContent = P[mine].name + '에 설치하기';
+    $('#heroAlt').innerHTML = keys.filter(function (k) { return k !== mine; }).map(altLink).join('');
+  } else {
+    $('#heroBtn').textContent = '기기 고르고 받기';
+    $('#closeBtn').textContent = '기기 고르고 받기';
+    $('#heroAlt').innerHTML = keys.map(altLink).join('');
+    if (os === 'ios') $('#iosNote').hidden = false;
+  }
+
+  /* ---------- 체험 무대 ---------- */
+  var F = [
+    { f: .07, t: '홈', s: '오늘의 달과 이어 하던 세션', h: '열자마자 이어 하던 곳으로',
+      p: '오늘의 달과 진행 중인 세션이 먼저 보여요. 문창놈의 작품도 바로 아래에 있어요.',
+      js: "R.stack=[{page:'home'}];render();scrollTo(0,0)" },
+    { f: .19, t: '세션', s: '작품 × 내 캐릭터로 한 판씩', h: '한 판의 모든 것을 한 화면에',
+      p: '작품과 내 캐릭터 프로필을 묶어 세션을 만들어요. 루트, 파트너, 만난 인물과 관계, 꼭 기억할 것까지 여기서 관리해요.',
+      tip: '예시 세션 「부랑자 루트 · 첫 계약」이 들어 있어요.',
+      js: "R.stack=[{page:'rec',t:'ses'}];go({page:'run',id:'demo_run'})" },
+    { f: .31, t: '일지', s: '회차마다 한 장씩', h: '어디까지 했더라, 이제 안 헷갈려요',
+      p: '그날의 장면과 대사, 내린 선택, 얻은 것, 다음에 할 일을 적어 두면 다음 플레이를 바로 이어 갈 수 있어요.',
+      js: "R.stack=[{page:'rec',t:'ent'}];go({page:'session',id:'demo_e3'})" },
+    { f: .41, t: '작품 허브', s: '공식 작품 정보와 인물', h: '작품 설정은 앱 안에서',
+      p: '문창놈 공식 작품의 소개와 인물을 보고, 나만 보는 별점과 메모를 남겨요. 아직 만나지 않은 인물은 스포일러로 가려져요.',
+      js: "R.stack=[{page:'home'}];go({page:'work',id:'tamer'})" },
+    { f: .5, t: '빠른 복사 달', s: '크랙 위에 뜨는 작은 달', h: '크랙 위에 작은 달이 떠요',
+      p: '안드로이드와 컴퓨터용 MOON을 켜 두고 크랙으로 넘어가면 화면 가장자리에 달이 떠요. 누르면 상용구·기억·요약이 펼쳐지고, 고르면 바로 복사돼요.',
+      tip: '휴대폰 화면 옆의 달을 누르면 같은 목록이 열려요.',
+      js: "R.stack=[{page:'rec',t:'ses'}];go({page:'run',id:'demo_run'});setTimeout(openDockPanel,350)", dock: true },
+    { f: .62, t: 'BGM', s: '작품별 배경음악', h: '음악을 틀어 두고 플레이',
+      p: '작품마다 만든 배경음악을 앱 안에서 바로 틀어요. 이 체험판에서도 실제로 재생돼요.',
+      js: "R.stack=[{page:'home'}];go({page:'bgm'})" },
+    { f: .8, t: '백업', s: '기록은 내 기기에만', h: '서버도, 로그인도 없어요',
+      p: '기록은 쓰는 기기 안에만 저장돼요. 백업 파일 하나로 휴대폰과 컴퓨터 사이를 옮길 수 있어요.',
+      js: "R.stack=[{page:'my'}];go({page:'backup'})" }
+  ];
+  var rail = $('#rail');
+  rail.innerHTML = F.map(function (x, i) {
+    return '<li><button type="button" aria-pressed="false" data-i="' + i + '"><svg viewBox="-48 -48 96 96" aria-hidden="true"><circle class="rm-disc" r="40"/><path class="rm-lit" d="' + litPath(x.f, 40) + '"/></svg><span><b>' + esc(x.t) + '</b><small>' + esc(x.s) + '</small></span><i></i></button></li>';
+  }).join('');
+
+  /* 배경 달: 기능을 고르면 그 위상으로 차오르거나 기울어요 */
+  var sky = $('#skyLit'), cur = today, anim = 0;
+  sky.setAttribute('d', litPath(cur, 44));
+  function turnMoon(to) {
+    cancelAnimationFrame(anim);
+    var from = cur, d = ((to - from) % 1 + 1) % 1; if (d > .5) d -= 1;
+    if (reduce) { cur = to; sky.setAttribute('d', litPath(cur, 44)); return; }
+    var t0 = performance.now(), dur = 1200;
+    (function step(now) {
+      var k = Math.min(1, (now - t0) / dur), e = k === 1 ? 1 : 1 - Math.pow(2, -10 * k);
+      cur = ((from + d * e) % 1 + 1) % 1; sky.setAttribute('d', litPath(cur, 44));
+      if (k < 1) anim = requestAnimationFrame(step);
+    })(t0);
+  }
+
+  var frame = $('#app'), screen = $('#screen'), about = $('#about'), fm = $('#floatMoon'), ready = false, pending = null, sel = -1;
+  function drive(js) {
+    if (!ready) { pending = js; return; }
+    try { frame.contentWindow.eval("try{closeDockPanel();closeSheet()}catch(e){};try{" + js + "}catch(e){R.stack=[{page:'home'}];render()}"); } catch (e) {}
+  }
+  function pick(i) {
+    var x = F[i]; sel = i;
+    $$('button', rail).forEach(function (b, j) { b.setAttribute('aria-pressed', j === i); });
+    about.innerHTML = '<div data-anim><h2>' + esc(x.h) + '</h2><p>' + esc(x.p) + '</p>' + (x.tip ? '<p class="tip">' + esc(x.tip) + '</p>' : '') + '</div>';
+    turnMoon(x.f);
+    fm.classList.toggle('on', !!x.dock); fm.tabIndex = x.dock ? 0 : -1;
+    drive(x.js);
+  }
+  rail.addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    pick(+b.dataset.i);
+    if (narrow.matches) { screen.classList.add('live'); b.scrollIntoView({ inline: 'center', block: 'nearest', behavior: reduce ? 'auto' : 'smooth' }); }
+  });
+  fm.addEventListener('click', function () { drive("go({page:'run',id:'demo_run'});setTimeout(openDockPanel,300)"); screen.classList.add('live'); });
+  frame.addEventListener('load', function () {
+    ready = true;
+    setTimeout(function () { screen.classList.add('ready'); }, 250);
+    if (pending) { var p = pending; pending = null; setTimeout(function () { drive(p); }, 300); }
+  });
+  $('#tapcover').addEventListener('click', function () { screen.classList.add('live'); });
+  $('#reset').addEventListener('click', function () {
+    try { frame.contentWindow.indexedDB.deleteDatabase('moon-archive'); localStorage.removeItem('moon-archive'); localStorage.removeItem('moon-demo-init'); } catch (e) {}
+    ready = false; screen.classList.remove('ready');
+    pending = sel >= 0 ? F[sel].js : null;
+    setTimeout(function () { frame.contentWindow.location.reload(); }, 150);
+  });
+  about.innerHTML = '<div><h2>기능을 하나 골라 보세요</h2><p>고른 기능으로 휴대폰 화면이 바로 넘어가요. 화면 안의 버튼도 실제로 눌러져요.</p></div>';
+
+  /* ---------- 받고 설치하기 ---------- */
+  var B = function (t, hit) { return '<span class="m-b' + (hit ? ' hit' : '') + '">' + t + '</span>'; };
+  var win = function (bar, body, btns) { return '<div class="m-win"><div class="m-bar"><i></i><i></i><i></i>' + (bar ? '<span>' + bar + '</span>' : '') + '</div><div class="m-body">' + body + '</div>' + (btns ? '<div class="m-btns">' + btns + '</div>' : '') + '</div>'; };
+  var icon = function (s) { return '<img src="img/icon-180.png" alt="" width="' + s + '" height="' + s + '" style="width:' + s + 'px;height:' + s + 'px">'; };
+  var S = {
+    android: [
+      { t: 'APK 파일 받기', p: '휴대폰 브라우저에서 받기를 누르고, 다 받아지면 <q>열기</q>를 눌러요. 파일이 커서 와이파이를 권해요.',
+        m: function (f) { return win('다운로드', '<h4>다운로드 완료</h4><span class="fn">' + f + '</span>', B('닫기') + B('열기', 1)); } },
+      { t: '이 출처 허용하기', p: '처음이라면 설정 화면이 나와요. 지금 쓰는 브라우저의 <q>이 출처 허용</q>을 켜고 뒤로 돌아와요.',
+        m: function () { return '<div class="m-win"><div class="m-bar"><span>출처를 알 수 없는 앱 설치</span></div><div class="m-body"><h4>Chrome</h4>보안을 위해 이 출처에서 받은 앱은 설치할 수 없도록 설정되어 있어요.</div><div class="m-row"><span>이 출처 허용</span><span class="m-tog hit"></span></div></div>'; } },
+      { t: '설치', p: '<q>설치</q>를 눌러요. 몇 초면 끝나요.',
+        m: function () { return win('', '<div style="margin-bottom:10px">' + icon(44) + '</div><h4>MOON</h4>이 앱을 설치할까요?', B('취소') + B('설치', 1)); } },
+      { t: 'Play 프로텍트가 물어보면', p: '스토어 밖 앱이라 확인 창이 뜰 수 있어요. <q>세부정보 더보기</q>를 열고 <q>무시하고 설치</q>를 눌러요.',
+        m: function () { return win('Play 프로텍트', '<h4>확인되지 않은 앱</h4>Play 프로텍트에서 이 앱의 개발자를 확인할 수 없어요.<br><span class="m-link">세부정보 더보기</span>', B('확인') + B('무시하고 설치', 1)); } }
+    ],
+    windows: [
+      { t: '설치 파일 받기', p: '받기를 누르면 브라우저가 경고할 수 있어요. 다운로드 목록의 <q>…</q>에서 <q>유지</q>를 골라요.',
+        m: function (f) { return win('다운로드', '<span class="fn">' + f + '</span><br>이 파일은 일반적으로 다운로드되지 않습니다.', B('삭제') + B('유지', 1)); } },
+      { t: '실행하고 추가 정보 누르기', p: '받은 파일을 실행하면 <q>Windows의 PC 보호</q> 창이 떠요. 본문의 <q>추가 정보</q>를 눌러요.',
+        m: function () { return win('', '<h4>Windows의 PC 보호</h4>Microsoft Defender SmartScreen에서 인식할 수 없는 앱의 시작을 차단했습니다.<br><span class="m-link hit">추가 정보</span>', B('실행 안 함')); } },
+      { t: '실행 누르기', p: '아래에 <q>실행</q> 버튼이 새로 생겨요. 누르면 설치가 시작돼요.',
+        m: function (f) { return win('', '<h4>Windows의 PC 보호</h4>앱: <span class="fn">' + f + '</span><br>게시자: 알 수 없는 게시자', B('실행', 1) + B('실행 안 함')); } },
+      { t: '설치 끝', p: '바탕 화면과 시작 메뉴에 MOON이 생겨요. 다음부터는 경고 없이 열려요.',
+        m: function () { return '<div class="m-start"><span class="hit">' + icon(34) + 'MOON</span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>'; } }
+    ],
+    mac: [
+      { t: 'DMG 받아서 열기', p: '받은 dmg 파일을 더블클릭하면 창이 하나 떠요.',
+        m: function (f) { return win('다운로드', '<h4>다운로드 완료</h4><span class="fn">' + f + '</span>', B('Finder에서 보기') + B('열기', 1)); } },
+      { t: '응용 프로그램으로 옮기기', p: 'MOON 아이콘을 응용 프로그램 폴더로 끌어다 놓아요.',
+        m: function () { return '<div class="m-win"><div class="m-bar"><i></i><i></i><i></i><span>MOON</span></div><div class="m-body"><div class="m-drag"><span class="m-ico">' + icon(64) + 'MOON</span><span class="m-arrow"></span><span class="m-ico"><span class="fold"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#A9A296" stroke-width="1.4" aria-hidden="true"><path d="M3 6.5h6l2 2h10v10H3z"/></svg></span>응용 프로그램</span></div></div></div>'; } },
+      { t: '처음엔 우클릭 → 열기', p: '응용 프로그램 폴더에서 MOON을 <q>control</q>+클릭(또는 우클릭)하고 <q>열기</q>를 골라요. 한 번 더 묻는 창에서도 <q>열기</q>.',
+        m: function () { return '<div class="m-menu"><div class="hit">열기</div><div>패키지 내용 보기</div><hr><div>휴지통으로 이동</div><hr><div>정보 가져오기</div><div>이름 변경</div></div>'; } },
+      { t: '그래도 막히면', p: '시스템 설정 → 개인정보 보호 및 보안 맨 아래에서 MOON 옆의 <q>그래도 열기</q>를 눌러요.',
+        m: function () { return win('개인정보 보호 및 보안', '<h4>보안</h4>‘MOON’은(는) 확인되지 않은 개발자가 배포했기 때문에 사용이 차단되었습니다.', B('그래도 열기', 1)); } }
+    ]
+  };
+  var AFTER = {
+    android: '<p><b>업데이트할 때</b>새 APK를 그대로 설치하면 덮어 설치되고 기록도 남아요.</p><p><b>1.1.x에서 올라온다면</b>1.2.0부터 서명이 바뀌어 한 번만 지우고 새로 설치해야 해요. 지우기 전에 MY → 백업 · 복원에서 백업 파일을 저장하세요.</p><p><b>빠른 복사 달</b>설정에서 켜면 <q>다른 앱 위에 표시</q> 권한을 물어요. 허용하면 크랙 위에 달이 떠요.</p>',
+    windows: '<p><b>왜 경고가 뜨나요?</b>유료 코드 서명 인증서를 쓰지 않아서 Windows가 처음 보는 프로그램이라고 한 번 확인하는 거예요.</p><p><b>업데이트할 때</b>새 설치 파일을 실행하면 덮어 설치되고 기록은 그대로 남아요.</p>',
+    mac: '<p><b>왜 바로 안 열리나요?</b>애플 공증을 받지 않은 앱이라 macOS가 한 번 확인해요. 한 번 열고 나면 다음부터는 그냥 열려요.</p><p><b>업데이트할 때</b>새 dmg에서 MOON을 다시 옮기고 <q>대치</q>를 고르면 돼요. 기록은 남아요.</p>'
+  };
+  var plats = $('#plats'), panels = $('#panels');
+  plats.innerHTML = keys.map(function (k) {
+    return '<button class="plat' + (k === mine ? ' mine' : '') + '" role="tab" id="tab-' + k + '" aria-controls="pan-' + k + '" aria-selected="false" tabindex="-1">' + P[k].icon + '<b>' + P[k].name + '</b><span>' + P[k].need + '</span><em class="me">이 기기</em></button>';
+  }).join('');
+  panels.innerHTML = keys.map(function (k) {
+    var f = R.files[k];
+    return '<div class="panel" role="tabpanel" id="pan-' + k + '" aria-labelledby="tab-' + k + '" hidden><div class="lhs">' +
+      '<div class="fileline"><a class="btn pri lg" href="' + url(k) + '">' + P[k].kind + ' 받기 <small>' + mb(f.size) + '</small></a><dl><div><dt>파일</dt><dd class="num">' + esc(f.name) + '</dd></div><div><dt>버전</dt><dd class="num">' + ver + ' · ' + dot(R.date) + '</dd></div><div><dt>필요</dt><dd>' + P[k].need + '</dd></div></dl></div>' +
+      '<ol class="steps">' + S[k].map(function (s, i) { return '<li><button type="button" data-k="' + k + '" data-s="' + i + '"><span class="n">' + (i + 1) + '</span><b>' + s.t + '</b><p><span>' + s.p + '</span></p></button></li>'; }).join('') + '</ol>' +
+      '<div class="after">' + AFTER[k] + '</div></div>' +
+      '<div class="view"><div class="mock" id="mock-' + k + '" aria-hidden="true"></div><div class="mockcap"><span>예시 화면이에요. 기기마다 문구가 조금 다를 수 있어요.</span><span class="num" id="pg-' + k + '"></span></div>' +
+      '<div class="stepnav"><button class="btn" type="button" data-k="' + k + '" data-d="-1">이전</button><button class="btn" type="button" data-k="' + k + '" data-d="1">다음 단계</button></div></div></div>';
+  }).join('');
+  var at = { android: 0, windows: 0, mac: 0 };
+  function step(k, i) {
+    i = Math.max(0, Math.min(S[k].length - 1, i)); at[k] = i;
+    $('#mock-' + k).innerHTML = '<div>' + S[k][i].m(esc(R.files[k].name)) + '</div>';
+    $('#pg-' + k).textContent = (i + 1) + ' / ' + S[k].length;
+    $$('.steps button[data-k="' + k + '"]').forEach(function (b, j) { if (j === i) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current'); });
+    var nav = $$('.stepnav button[data-k="' + k + '"]');
+    nav[0].disabled = i === 0; nav[1].disabled = i === S[k].length - 1;
+  }
+  function plat(k, focus) {
+    keys.forEach(function (x) {
+      var on = x === k, t = $('#tab-' + x);
+      t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1; $('#pan-' + x).hidden = !on;
+    });
+    step(k, at[k]); if (focus) $('#tab-' + k).focus();
+  }
+  plats.addEventListener('click', function (e) { var b = e.target.closest('[role=tab]'); if (b) plat(b.id.slice(4)); });
+  plats.addEventListener('keydown', function (e) {
+    var d = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0; if (!d) return;
+    e.preventDefault(); var i = keys.indexOf(document.activeElement.id.slice(4)); plat(keys[(i + d + 3) % 3], true);
+  });
+  panels.addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-k]'); if (!b) return;
+    if (b.dataset.s != null) step(b.dataset.k, +b.dataset.s); else step(b.dataset.k, at[b.dataset.k] + (+b.dataset.d));
+  });
+  plat(mine || 'android');
+
+  /* ---------- 변경 내역 ---------- */
+  $('#latestV').textContent = ver;
+  $('#latestD').textContent = dot(R.date) + ' 공개';
+  $('#log').innerHTML = R.changes.map(function (c, i) {
+    return '<li><details' + (i === 0 ? ' open' : '') + '><summary><span class="v">v' + esc(c.v) + '</span><span class="first">' + esc(c.items[0]) + '</span><span class="d num">' + dot(c.date) + '</span></summary><ul>' +
+      c.items.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul></details></li>';
+  }).join('');
+
+  /* ---------- 따라오는 받기 막대 ---------- */
+  var dock = $('#dock'), seen = { hero: true, get: false, end: false };
+  function upd() { var on = !seen.hero && !seen.get && !seen.end; dock.classList.toggle('on', on); dock.setAttribute('aria-hidden', !on); $('#dockBtn').tabIndex = on ? 0 : -1; }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) { es.forEach(function (en) { seen[en.target.dataset.w] = en.isIntersecting; }); upd(); });
+    [['#heroGet', 'hero'], ['#get', 'get'], ['#end', 'end']].forEach(function (p) { var el = $(p[0]); el.dataset.w = p[1]; io.observe(el); });
+  }
+})();
+</script>
+</body>
+</html>
