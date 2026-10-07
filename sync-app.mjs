@@ -12,7 +12,7 @@ const day = n => { const d = new Date(Date.now() - n * 864e5); return d.toISOStr
 const t = n => Date.now() - n * 864e5;
 
 const DEMO = {
-  v: 2, seeded: true, samplePurged: true, snipVars: false, unlock: {}, notes: [], customWorks: [], myEval: {},
+  v: 2, demoV: 2, seeded: true, samplePurged: true, snipVars: false, unlock: {}, notes: [], customWorks: [], myEval: {},
   settings: { spoiler: true, activeRun: 'demo_run' },
   snippets: [
     { id: 'sn1', title: '상황 정리 요청', text: '(OOC: 지금까지의 진행 상황을 인물·장소·목표 순서로 짧게 정리해줘)' },
@@ -49,7 +49,8 @@ fs.mkdirSync(out, { recursive: true });
 let html = fs.readFileSync(path.join(src, 'index.html'), 'utf8');
 const boot = 'const d = await Store.load();';
 if (!html.includes(boot)) throw new Error('앱의 시작 코드가 바뀌었어요: sync-app.mjs의 boot 문자열을 확인하세요');
-html = html.replace(boot, 'const d = (await Store.load()) || window.__MOON_DEMO__ || null;');
+// 저장된 기록이 없거나, 예전 버전의 예시 기록 그대로면 새 예시로 바꿔요. 방문자가 만든 기록은 건드리지 않아요.
+html = html.replace(boot, 'const d0 = await Store.load(), DM = window.__MOON_DEMO__; const d = !d0 || (DM && (d0.runs || []).some(r => r.id === "demo_run") && d0.demoV !== DM.demoV) ? DM : d0;');
 html = html.replace('<meta charset="utf-8">', '<meta charset="utf-8">\n<meta name="robots" content="noindex">\n' + inject);
 
 // 최신작을 맨 앞에: 작품 목록과 BGM 목록에서 FEATURED 작품을 앞으로 옮겨요.
